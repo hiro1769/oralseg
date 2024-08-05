@@ -4,7 +4,7 @@ import numpy as np
 import argparse
 
 parser = argparse.ArgumentParser(description='Inference models')
-parser.add_argument('--input_dir_path', type=str, default="data_preprocessed_path", help = "input directory path that contain obj files.")
+parser.add_argument('--input_dir_path', type=str, default="/home/repos/ToothGroupNetwork/data_preprocessed_path", help = "input directory path that contain obj files.")
 parser.add_argument('--split_txt_save_dir_path', type=str, default="test", help = "split txt path.")
 parser.add_argument('--split_ratio_train', type=float, default=0.8, help = "split_ratio for train")
 parser.add_argument('--split_ratio_val', type=float, default=0.1, help = "split_ratio for val")

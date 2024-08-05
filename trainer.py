@@ -96,6 +96,6 @@ class Trainer:
     def run(self):
         train_data_loader = self.gen_set[0][0]
         val_data_loader = self.gen_set[0][1]
-        for epoch in range(100000):
+        for epoch in range(10000):
             self.train(epoch, train_data_loader)
             self.test(epoch, val_data_loader, True)

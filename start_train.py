@@ -3,12 +3,12 @@ from train_configs import train_config_maker
 import argparse
 
 parser = argparse.ArgumentParser(description='Inference models')
-parser.add_argument('--model_name', default="tsegnet", type=str, help = "model name. list: tsegnet | tgnet_fps/tgnet_bdl | pointnet | pointnetpp | dgcnn | pointtransformer")
-parser.add_argument('--config_path', default="train_configs/tsegnet.py", type=str, help = "train config file path.")
-parser.add_argument('--experiment_name', default="tsegnet_0620", type=str, help = "experiment name.")
-parser.add_argument('--input_data_dir_path', default="data_preprocessed_path", type=str, help = "input data dir path.")
-parser.add_argument('--train_data_split_txt_path', default="base_name_train_fold.txt", type=str, help = "train cases list file path.")
-parser.add_argument('--val_data_split_txt_path', default="base_name_val_fold.txt", type=str, help = "val cases list file path.")
+parser.add_argument('--model_name', default="dgcnn", type=str, help = "model name. list: tsegnet | tgnet_fps/tgnet_bdl | pointnet | pointnetpp | dgcnn | pointtransformer")
+parser.add_argument('--config_path', default="train_configs/dgcnn.py", type=str, help = "train config file path.")
+parser.add_argument('--experiment_name', default="dgcnn_0620", type=str, help = "experiment name.")
+parser.add_argument('--input_data_dir_path', default="/home/repos/ToothGroupNetwork/data_preprocessed_path", type=str, help = "input data dir path.")
+parser.add_argument('--train_data_split_txt_path', default="/home/repos/ToothGroupNetwork/test/base_name_train_fold.txt", type=str, help = "train cases list file path.")
+parser.add_argument('--val_data_split_txt_path', default="/home/repos/ToothGroupNetwork/test/base_name_val_fold.txt", type=str, help = "val cases list file path.")
 args = parser.parse_args()
 
 config = train_config_maker.get_train_config(

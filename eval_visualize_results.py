@@ -11,9 +11,9 @@ import copy
 import argparse
 
 parser = argparse.ArgumentParser(description='Inference models')
-parser.add_argument('--mesh_path', default="G:/tooth_seg/main/all_datas/chl/3D_scans_per_patient_obj_files/013FHA7K/013FHA7K_lower.obj", type=str)
-parser.add_argument('--gt_json_path', default="G:/tooth_seg/main/all_datas/chl/ground-truth_labels_instances/013FHA7K/013FHA7K_lower.json" ,type=str)
-parser.add_argument('--pred_json_path', type=str, default="test_results/013FHA7K_lower.json")
+parser.add_argument('--mesh_path', default="/home/repos/ToothGroupNetwork/data/3D_scans_per_patient_obj_files/0AAQ6BO3/0AAQ6BO3_lower.obj", type=str)
+parser.add_argument('--gt_json_path', default="/home/repos/ToothGroupNetwork/data/ground-truth_labels_instances/0AAQ6BO3/0AAQ6BO3_lower.json" ,type=str)
+parser.add_argument('--pred_json_path', type=str, default="/home/repos/ToothGroupNetwork/test_results/0AAQ6BO3_lower.json")
 args = parser.parse_args()
 
 

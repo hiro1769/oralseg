@@ -5,9 +5,9 @@ from glob import glob
 import gen_utils as gu
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--source_obj_data_path', default="G:/tooth_seg/main/all_datas/chl/3D_scans_per_patient_obj_files", type=str, help="data path in which original .obj data are saved")
-parser.add_argument('--source_json_data_path', default="G:/tooth_seg/main/all_datas/chl/ground-truth_labels_instances", type=str, help="data path in which original .json data are saved")
-parser.add_argument('--save_data_path', default="data_preprocessed_path", type=str, help="data path in which processed data will be saved")
+parser.add_argument('--source_obj_data_path', default="/home/repos/ToothGroupNetwork/data/3D_scans_per_patient_obj_files", type=str, help="data path in which original .obj data are saved")
+parser.add_argument('--source_json_data_path', default="/home/repos/ToothGroupNetwork/data/ground-truth_labels_instances", type=str, help="data path in which original .json data are saved")
+parser.add_argument('--save_data_path', default="/home/repos/ToothGroupNetwork/data_preprocessed_path", type=str, help="data path in which processed data will be saved")
 args = parser.parse_args()
 
 SAVE_PATH = args.save_data_path

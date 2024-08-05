@@ -7,7 +7,7 @@ def get_default_config(experiment_name, input_data_dir_path, train_data_split_tx
         #WandB Options
         #If you dont want to use wandb, just set config["wandb"]["wandb_on"] value to False.
         "wandb":{
-            "entity": "hoyeon94", #change to your username
+            "entity": "hiro1", #change to your username
             "wandb_on": True,
             "project": "3d tooth mesh segmentation", 
             "tags": "3d tooth mesh segmentation",
