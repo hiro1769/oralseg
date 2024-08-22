@@ -3,11 +3,14 @@ from . import tgn_loss
 from models.base_model import BaseModel
 from loss_meter import LossMap
 
+"""
+pointnet++ 模型
+"""
 class PointPpFirstModel(BaseModel):
-    def get_loss(self, gt_seg_label_1, sem_1):
+    def get_loss(self, gt_seg_label_1, sem_1,):#sem_1: 预测得到的标签
         tooth_class_loss_1 = tgn_loss.tooth_class_loss(sem_1, gt_seg_label_1, 17)
         return {
-            "tooth_class_loss_1": (tooth_class_loss_1, 1),
+            "ce_loss": (tooth_class_loss_1, 1),
         }
 
     def step(self, batch_idx, batch_item, phase):
@@ -36,8 +39,8 @@ class PointPpFirstModel(BaseModel):
         
         if phase == "train":
             loss_sum = loss_meter.get_sum()
-            self.optimizer.zero_grad()
-            loss_sum.backward()
+            self.optimizer.zero_grad() #梯度清零
+            loss_sum.backward() #反向传播
             self.optimizer.step()
 
         return loss_meter

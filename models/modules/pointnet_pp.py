@@ -9,13 +9,13 @@ class get_model(nn.Module):
         self.cls_pred = True
         input_feature_num=6
         scale = 4
-        # target point 개수, ball query radius, maximun sample in ball 개수, input feature 개수(position + 각각의 feature vector), MLP 개수, group_all False 
-        self.sa1 = PointNetSetAbstractionMsg(1024, [0.025, 0.05], [32, 64], input_feature_num, [[32*scale, 32*scale], [32*scale, 32*scale]])
+        #目标点的数量、球查询半径、球内的最大采样数量、输入特征数量（位置加上特征向量）、MLP的数量、group_all为False
+        self.sa1 = PointNetSetAbstractionMsg(1024, [0.025, 0.05], [32, 64], input_feature_num, [[32*scale, 32*scale], [32*scale, 32*scale]])#两次MLp和两个半径
         self.sa2 = PointNetSetAbstractionMsg(512, [0.05, 0.1], [32, 64], 32*scale+32*scale, [[64*scale, 128*scale], [64*scale, 128*scale]])
         self.sa3 = PointNetSetAbstractionMsg(256, [0.1, 0.2], [32, 64], 128*scale+128*scale, [[196*scale, 256*scale], [196*scale, 256*scale]])
         
 
-        self.fp3 = PointNetFeaturePropagation((512+256)*scale, [256*scale, 256*scale])
+        self.fp3 = PointNetFeaturePropagation((512+256)*scale, [256*scale, 256*scale]) #in_channel, [mlp1, mlp2]
         self.fp2 = PointNetFeaturePropagation((256+64)*scale, [128*scale, 128*scale])
         self.fp1 = PointNetFeaturePropagation((128*scale)+input_feature_num, [64*scale, 32*scale])
 
@@ -39,28 +39,28 @@ class get_model(nn.Module):
         self.conv1 = nn.Conv1d(32, 16, 1)
         self.bn1 = nn.BatchNorm1d(16)
         
-    #input으로, batch, channel(xyz + 기타등등), sample in batch 이렇게 와야 한다.
-    def forward(self, xyz_in):
+    #输入批次、通道（包括xyz和其他特征）、批次中的采样数据。
+    def forward(self, xyz_in):#xyz_in [[B,6,N],[B,1,N]]
         xyz = xyz_in[0]
         l0_points = xyz
         l0_xyz = xyz[:,:3,:]
-        l1_xyz, l1_points = self.sa1(l0_xyz, l0_points)
+        l1_xyz, l1_points = self.sa1(l0_xyz, l0_points)#xyz是采样后的点的位置[B,C,S], points是经过SA层的特征向量[B, D`, S]
         l2_xyz, l2_points = self.sa2(l1_xyz, l1_points)
         l3_xyz, l3_points = self.sa3(l2_xyz, l2_points)
 
-        l2_points = self.fp3(l2_xyz, l3_xyz, l2_points, l3_points)
+        l2_points = self.fp3(l2_xyz, l3_xyz, l2_points, l3_points)#[1, 1024, 512]
         l1_points = self.fp2(l1_xyz, l2_xyz, l1_points, l2_points)
         l0_points = self.fp1(l0_xyz, l1_xyz, l0_points, l1_points)
 
         #x = F.relu(self.bn1(self.conv1(l0_points)))
         
-        offset_result = F.relu(self.offset_bn_1(self.offset_conv_1(l0_points)))
-        offset_result = self.offset_conv_2(offset_result)
+        offset_result = F.relu(self.offset_bn_1(self.offset_conv_1(l0_points))) #B, 16, N
+        offset_result = self.offset_conv_2(offset_result) #B, 3, N
 
         dist_result = F.relu(self.dist_bn_1(self.dist_conv_1(l0_points)))
-        dist_result = self.dist_conv_2(dist_result)
+        dist_result = self.dist_conv_2(dist_result)#B, 1, N
 
-        output = [l0_points, l3_points, l0_xyz, l3_xyz, offset_result, dist_result]
+        output = [l1_xyz,l1_points,l0_points, l3_points, l0_xyz, l3_xyz, offset_result, dist_result]
         
         if self.cls_pred:
             cls_pred = F.relu(self.cls_bn_1(self.cls_conv_1(l0_points)))
@@ -85,9 +85,11 @@ class PointPpFirstModule(torch.nn.Module):
             inputs[1] => B, 1, 24000 : ground truth segmentation
         """
         B, C, N = inputs[0].shape
-        l0_points, l3_points, l0_xyz, l3_xyz, offset_result, dist_result, cls_pred = self.first_sem_model(inputs)
+        l1_xyz, l1_points, l0_points, l3_points, l0_xyz, l3_xyz, offset_result, dist_result, cls_pred = self.first_sem_model(inputs)
         outputs = {
-            "cls_pred": cls_pred
+            "cls_pred": cls_pred,
+            "l1_xyz": l1_xyz,
+            "l1_points": l1_points,
         }
         return outputs
 

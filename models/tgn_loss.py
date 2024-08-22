@@ -359,12 +359,12 @@ def tooth_class_loss(cls_pred, gt_cls, cls_num, weight=None, label_smoothing=Non
         gt_cls: 1, 1, 16000 -> -1 is background, 0~15 is foreground
     """
     B, _, N = gt_cls.shape
-    gt_cls = gt_cls.view(B, -1)
+    gt_cls = gt_cls.view(B, -1) 
     gt_cls = gt_cls.type(torch.long)
-    gt_cls = gt_cls + 1
+    gt_cls = gt_cls + 1#-1~16 -> 0~17
     if label_smoothing is None:
         if weight is None:
-            loss = torch.nn.CrossEntropyLoss().type(torch.float).cuda()(cls_pred, gt_cls)
+            loss = torch.nn.CrossEntropyLoss().type(torch.float).cuda()(cls_pred, gt_cls) #计算平均交叉熵损失
         else:
             loss = torch.nn.CrossEntropyLoss(weight=torch.tensor(weight).type(torch.float).cuda())(cls_pred, gt_cls)
     else:
