@@ -9,9 +9,9 @@ def get_default_config(experiment_name, input_data_dir_path, train_data_split_tx
         "wandb":{
             "entity": "hiro1", #change to your username
             "wandb_on": True,
-            "project": "3d tooth mesh segmentation", 
-            "tags": "3d tooth mesh segmentation",
-            "notes": "3d tooth mesh segmentation",
+            "project": "tooth mesh segmentation", 
+            "tags": "tooth mesh segmentation",
+            "notes": "tooth mesh segmentation",
             "name": experiment_name,
         },
         #Generator options

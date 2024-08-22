@@ -9,9 +9,9 @@ from predict_utils import ScanSegmentation
 parser = argparse.ArgumentParser(description='Inference models')
 parser.add_argument('--input_dir_path', default="/home/repos/ToothGroupNetwork/data/3D_scans_per_patient_obj_files", type=str, help = "input directory path that contain obj files.")
 parser.add_argument('--split_txt_path', default="/home/repos/ToothGroupNetwork/test/base_name_test_fold.txt" ,type=str,help = "split txt path.")
-parser.add_argument('--save_path', type=str, default="/home/repos/ToothGroupNetwork/test_results", help = "result save directory.")
+parser.add_argument('--save_path', type=str, default="/home/repos/ToothGroupNetwork/test_results/a", help = "result save directory.")
 parser.add_argument('--model_name', type=str, default="pointnetpp", help = "model name. list: tsegnet | tgnet | pointnet | pointnetpp | dgcnn | pointtransformer")
-parser.add_argument('--checkpoint_path', default="/home/repos/ToothGroupNetwork/ckpts/pointppnet_0620" ,type=str,help = "checkpoint path.")
+parser.add_argument('--checkpoint_path', default="/home/repos/ToothGroupNetwork/ckpts/test_82300_val" ,type=str,help = "checkpoint path.")
 #parser.add_argument('--checkpoint_path_bdl', default="ckpts/tgnet_bdl" ,type=str,help = "checkpoint path(for tgnet_bdl).")
 args = parser.parse_args()
 

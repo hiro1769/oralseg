@@ -29,7 +29,7 @@ class DentalModelGenerator(Dataset):
             self.mesh_paths = temp_ls
 
         if aug_obj_str is not None:
-            self.aug_obj = eval(aug_obj_str)
+            self.aug_obj = eval(aug_obj_str) #数据增强，旋转缩放
         else:
             self.aug_obj = None
 
@@ -41,10 +41,10 @@ class DentalModelGenerator(Dataset):
         mesh_arr = np.load(self.mesh_paths[idx].strip())
         output = {}
 
-        low_feat = mesh_arr.copy()[:,:6].astype("float32")
+        low_feat = mesh_arr.copy()[:,:6].astype("float32")#不包含标签[N,6]
         
-        seg_label = mesh_arr.copy()[:,6:].astype("int")
-        seg_label -= 1 # -1 means gingiva, 0 means first incisor...
+        seg_label = mesh_arr.copy()[:,6:].astype("int")#标签[N,1]
+        seg_label -= 1 # -1表示牙龈，0表示第一门牙...
         
         if self.aug_obj:
             self.aug_obj.reload_vals()
@@ -58,11 +58,11 @@ class DentalModelGenerator(Dataset):
             low_feat = self.aug_obj.run(low_feat)
 
         low_feat = torch.from_numpy(low_feat)
-        low_feat = low_feat.permute(1,0)
+        low_feat = low_feat.permute(1,0)#转置[6,N]
         output["feat"] = low_feat
 
         seg_label = torch.from_numpy(seg_label)
-        seg_label = seg_label.permute(1,0)
+        seg_label = seg_label.permute(1,0)#[1,N]
         output["gt_seg_label"] = seg_label
 
         output["aug_obj"] = copy.deepcopy(self.aug_obj)

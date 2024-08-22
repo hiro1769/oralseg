@@ -40,7 +40,7 @@ class LossMap:
     def del_loss(self: object, name: str):
         del self.loss_dict[name]
     
-    def get_sum(self):
+    def get_sum(self):#计算总损失，每个损失乘以权重
         summation = 0
         for key in self.loss_dict.keys():
             summation += self.loss_dict[key][0] * self.loss_dict[key][1]

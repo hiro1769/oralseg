@@ -3,7 +3,7 @@ from generator import DentalModelGenerator
 from torch.utils.data import DataLoader
 import os
 import torch
-
+#运行器
 def collate_fn(batch):
     output = {}
 

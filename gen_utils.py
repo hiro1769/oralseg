@@ -122,7 +122,7 @@ def get_up_from_name(path):
     return os.path.basename(path).split("_")[-1].split(".")[0]=="up"
 
 def resample_pcd(pcd_ls, n, method):
-    """Drop or duplicate points so that pcd has exactly n points"""
+    """删除或复制点，使 pcd 恰好有 n 个点"""
     if method=="uniformly":
         idx = np.random.permutation(pcd_ls[0].shape[0])
     elif method == "fps":
@@ -210,12 +210,12 @@ def read_txt_obj_ls(path, ret_mesh=False, use_tri_mesh=False):
         tri_ls = []
         #vertex_color_ls = []
         while True:
-            line = f.readline().split()
+            line = f.readline().split()#读取一行并按空格分割成单词列表
             if not line: break
-            if line[0]=='v':
-                vertex_ls.append(list(map(float,line[1:4])))
+            if line[0]=='v':#处理顶点信息
+                vertex_ls.append(list(map(float,line[1:4])))#将顶点坐标 (x, y, z) 转换为浮点数并添加到 vertex_ls 列表。
                 #vertex_color_ls.append(list(map(float,line[4:7])))
-            elif line[0]=='f':
+            elif line[0]=='f':#处理三角形面信息
                 tri_verts_idxes = list(map(str,line[1:4]))
                 if "//" in tri_verts_idxes[0]:
                     for i in range(len(tri_verts_idxes)):
